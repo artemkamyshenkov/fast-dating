@@ -9,7 +9,12 @@ const SearchStatus = ({ length }) => {
       return `${number} человек тусанут с тобой сегодня`;
     }
   };
-  return <h1 className={'badge p-2 ' + (length > 0 ? 'bg-primary' : 'bg-danger')}>{renderPhrase(length)}</h1>;
+  return (
+    <h2>
+      {' '}
+      <span className={'badge p-2 ' + (length > 0 ? 'bg-primary' : 'bg-danger')}>{renderPhrase(length)}</span>
+    </h2>
+  );
 };
 SearchStatus.propTypes = {
   length: PropTypes.number,
