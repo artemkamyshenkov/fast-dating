@@ -10,7 +10,9 @@
     "sourceType": "module"
   },
   "plugins": ["react"],
-  "rules": {},
+  "rules": {
+    "no-unused-vars": "off"
+  },
   "settings": {
     "import/resolver": {
       "node": {
