@@ -1,37 +1,36 @@
-import React from 'react';
-import Qualitie from './qualitie';
-import BookMark from './bookmark';
-import PropTypes from 'prop-types';
-const User = ({ _id, name, qualities, profession, completedMeetings, rate, onDelete, bookmark, onToggleBookMark }) => {
-  return (
-    <tr>
-      <td>{name}</td>
-      <td>
-        {qualities.map((quality) => (
-          <Qualitie key={quality._id} {...quality} />
-        ))}
-      </td>
-      <td>{profession.name}</td>
-      <td>{completedMeetings}</td>
-      <td>{<BookMark status={bookmark} onClick={() => onToggleBookMark(_id)} />}</td>
-      <td>{rate}/5</td>
-      <td>
-        <button onClick={() => onDelete(_id)} className="btn btn-danger">
-          delete
-        </button>
-      </td>
-    </tr>
-  );
+import React, { useEffect, useState } from "react";
+import PropTypes from "prop-types";
+import api from "../api";
+import QualitiesList from "./qualitiesList";
+import { useHistory } from "react-router-dom";
+
+const UserPage = ({ userId }) => {
+    const history = useHistory();
+    const [user, setUser] = useState();
+    useEffect(() => {
+        api.users.getById(userId).then((data) => setUser(data));
+    });
+    const handleClick = () => {
+        history.push("/users");
+    };
+    if (user) {
+        return (
+            <div>
+                <h1> {user.name}</h1>
+                <h2>Профессия: {user.profession.name}</h2>
+                <QualitiesList qualities={user.qualities} />
+                <p>completedMeetings: {user.completedMeetings}</p>
+                <h2>Rate: {user.rate}</h2>
+                <button onClick={handleClick}> Все Пользователи</button>
+            </div>
+        );
+    } else {
+        return <h1>Loading</h1>;
+    }
 };
-User.propTypes = {
-  _id: PropTypes.string.isRequired,
-  name: PropTypes.string.isRequired,
-  qualities: PropTypes.array,
-  profession: PropTypes.object.isRequired,
-  completedMeetings: PropTypes.number.isRequired,
-  rate: PropTypes.number.isRequired,
-  onDelete: PropTypes.func.isRequired,
-  bookmark: PropTypes.bool,
-  onToggleBookMark: PropTypes.func.isRequired,
+
+UserPage.propTypes = {
+    userId: PropTypes.string.isRequired
 };
-export default User;
+
+export default UserPage;
