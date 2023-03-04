@@ -6,6 +6,7 @@ import api from '../api';
 import GroupList from './groupList';
 import SearchStatus from './searchStatus';
 import UserTable from './usersTable';
+import NavBar from './navBar';
 import _ from 'lodash';
 const Users = () => {
   const [currentPage, setCurrentPage] = useState(1);
@@ -83,6 +84,7 @@ const Users = () => {
       </div>
     );
   }
+
   return 'loading...';
 };
 Users.propTypes = {
