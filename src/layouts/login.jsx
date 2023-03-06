@@ -14,7 +14,19 @@ const Login = () => {
       isRequired: { message: 'Email is required' },
       isEmail: { message: 'Email is not correct' },
     },
-    password: { isRequired: { message: 'Password is required' } },
+    password: {
+      isRequired: { message: 'Password is required' },
+      isCapitalSymbol: {
+        message: 'Password must contain at least one capital letter',
+      },
+      isContainDidgit: {
+        message: 'Password must contain at least one didgit',
+      },
+      minLength: {
+        message: 'Password cannot be shorter than 8 characters',
+        value: 8,
+      },
+    },
   };
 
   useEffect(() => {
@@ -34,25 +46,38 @@ const Login = () => {
     console.log(data);
   };
 
+  const isValid = Object.keys(errors).length === 0;
   return (
-    <form onSubmit={handleSummit}>
-      <TextField
-        label="email"
-        name="email"
-        value={data.email}
-        onChange={handleChange}
-        error={errors.email}
-      />
-      <TextField
-        label="password"
-        type="password"
-        name="password"
-        value={data.password}
-        onChange={handleChange}
-        error={errors.password}
-      />
-      <button>Submit</button>
-    </form>
+    <div className="container mt-5">
+      <div className="row">
+        <div className="col-md-6 offset-md-3 shadow p-4">
+          <h3 className="mb-4">Login</h3>
+          <form onSubmit={handleSummit}>
+            <TextField
+              label="email"
+              name="email"
+              value={data.email}
+              onChange={handleChange}
+              error={errors.email}
+            />
+            <TextField
+              label="password"
+              type="password"
+              name="password"
+              value={data.password}
+              onChange={handleChange}
+              error={errors.password}
+            />
+            <button
+              disabled={!isValid}
+              className="btn btn-primary w-100 mx-auto"
+            >
+              Submit
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
   );
 };
 
