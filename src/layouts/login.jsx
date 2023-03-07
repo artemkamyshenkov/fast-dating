@@ -5,6 +5,7 @@ import validator from '../utils/validator';
 const Login = () => {
   const [data, setData] = useState({ email: '', password: '' });
   const [errors, setErrors] = useState({});
+
   const handleChange = ({ target }) => {
     setData((prevState) => ({ ...prevState, [target.name]: target.value }));
   };
