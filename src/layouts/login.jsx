@@ -16,7 +16,7 @@ const Login = () => {
     );
   };
   return (
-    <div className="container mt-5">
+    <div className="container mt-3 mb-5">
       <div className="row">
         <div className="col-md-6 offset-md-3 shadow p-4">
           {formType === 'register' ? (
@@ -34,7 +34,7 @@ const Login = () => {
             <>
               <h3 className="mb-4">Login</h3>
               <LoginForm />
-              <p>
+              <p className="mx-auto">
                 {`Don't have account?`}{' '}
                 <Link to="register" role="button" onClick={toggleFormType}>
                   Sign Up

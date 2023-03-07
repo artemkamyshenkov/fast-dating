@@ -5,6 +5,7 @@ import api from '../../api';
 import SelectField from '../common/form/selectField';
 import RadioField from '../common/form/radioField';
 import MultiSelectField from '../common/form/multiSelectField';
+import CheckBoxField from '../common/form/checkBoxField';
 
 const RegisterForm = () => {
   const [data, setData] = useState({
@@ -13,6 +14,7 @@ const RegisterForm = () => {
     profession: '',
     sex: 'male',
     qualities: [],
+    licence: false,
   });
   const [errors, setErrors] = useState({});
   const [professions, setProfession] = useState();
@@ -45,6 +47,11 @@ const RegisterForm = () => {
       },
     },
     profession: {
+      isRequired: {
+        message: 'Obligatory field',
+      },
+    },
+    licence: {
       isRequired: {
         message: 'Obligatory field',
       },
@@ -92,6 +99,7 @@ const RegisterForm = () => {
         defaultOption="Choose..."
         error={errors.profession}
         value={data.profession}
+        name="professions"
         label="Выберите профессию"
       />
       <RadioField
@@ -110,10 +118,23 @@ const RegisterForm = () => {
         onChange={handleChange}
         name="qualities"
         label="Выберите качества"
+        defaultValue={data.qualities}
       />
-      <button disabled={!isValid} className="btn btn-primary w-100 mx-auto">
+
+      <button
+        disabled={!isValid}
+        className="btn btn-primary w-100 mx-auto mb-2"
+      >
         Submit
       </button>
+      <CheckBoxField
+        value={data.licence}
+        onChange={handleChange}
+        name="licence"
+        error={errors.licence}
+      >
+        Согласен с правилами использования{' '}
+      </CheckBoxField>
     </form>
   );
 };
