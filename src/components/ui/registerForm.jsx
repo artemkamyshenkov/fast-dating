@@ -1,10 +1,16 @@
-import React, { useEffect, useState } from 'react';
-import validator from '../../utils/validator';
+import React, { useState, useEffect } from 'react';
 import TextField from '../common/form/textField';
-
-const LoginForm = () => {
-  const [data, setData] = useState({ email: '', password: '' });
+import validator from '../../utils/validator';
+import api from '../../api';
+import SelectField from '../common/form/selectField';
+const RegisterForm = () => {
+  const [data, setData] = useState({ email: '', password: '', profession: '' });
   const [errors, setErrors] = useState({});
+  const [professions, setProfession] = useState();
+
+  useEffect(() => {
+    api.professions.fetchAll().then((data) => setProfession(data));
+  }, []);
 
   const handleChange = ({ target }) => {
     setData((prevState) => ({ ...prevState, [target.name]: target.value }));
@@ -26,6 +32,11 @@ const LoginForm = () => {
       minLength: {
         message: 'Password cannot be shorter than 8 characters',
         value: 8,
+      },
+    },
+    profession: {
+      isRequired: {
+        message: 'Obligatory field',
       },
     },
   };
@@ -65,6 +76,14 @@ const LoginForm = () => {
         onChange={handleChange}
         error={errors.password}
       />
+      <SelectField
+        onChange={handleChange}
+        options={professions}
+        defaultOption="Choose..."
+        error={errors.profession}
+        value={data.profession}
+        label="Выберите профессию"
+      />
       <button disabled={!isValid} className="btn btn-primary w-100 mx-auto">
         Submit
       </button>
@@ -72,4 +91,4 @@ const LoginForm = () => {
   );
 };
 
-export default LoginForm;
+export default RegisterForm;
