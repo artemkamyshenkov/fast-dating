@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useParams, Link } from 'react-router-dom';
 import validator from '../../../utils/validator';
 import api from '../../../api';
 import TextField from '../../common/form/textField';
@@ -126,7 +126,13 @@ const EditUserPage = () => {
   };
   const isValid = Object.keys(errors).length === 0;
   return (
-    <div className="container mt-5">
+    <div className="container mt-5 position-relative">
+      <Link
+        className="btn btn-primary position-absolute top-0"
+        to={`/users/${data._id}`}
+      >
+        Назад
+      </Link>
       <div className="row">
         <div className="col-md-6 offset-md-3 shadow p-4">
           {!isLoading && Object.keys(professions).length > 0 ? (
