@@ -3,18 +3,13 @@ import PropTypes from 'prop-types';
 import api from '../../../api';
 import UserQualities from '../../ui/userQualities';
 import UserAvatar from '../../ui/userAvatar';
-import CommentsList from './commentsList';
+import Comments from '../../ui/comments';
 import UserMeetings from '../../ui/userMeetings';
 const UserPage = ({ userId }) => {
   const [user, setUser] = useState();
-  const [comments, setComments] = useState([]);
 
   useEffect(() => {
     api.users.getById(userId).then((data) => setUser(data));
-  }, []);
-
-  useEffect(() => {
-    api.comments.fetchCommentsForUser(userId).then((data) => setComments(data));
   }, []);
 
   if (user) {
@@ -28,7 +23,7 @@ const UserPage = ({ userId }) => {
               <UserMeetings meetings={user.completedMeetings} />
             </div>
             <div className="col-md-8">
-              <CommentsList comments={comments} />
+              <Comments />
             </div>
           </div>
         </div>
