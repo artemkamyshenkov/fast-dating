@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import TextField from '../common/form/textField';
 import validator from '../../utils/validator';
-import api from '../../api';
 import SelectField from '../common/form/selectField';
 import RadioField from '../common/form/radioField';
 import MultiSelectField from '../common/form/multiSelectField';
 import CheckBoxField from '../common/form/checkBoxField';
-
+import { useQualities } from '../../hooks/useQualities';
+import { useProfessions } from '../../hooks/useProfession';
+import { useAuth } from '../../hooks/useAuth';
 const RegisterForm = () => {
   const [data, setData] = useState({
     email: '',
@@ -17,13 +18,17 @@ const RegisterForm = () => {
     licence: false,
   });
   const [errors, setErrors] = useState({});
-  const [professions, setProfession] = useState();
-  const [qualities, setQualities] = useState({});
-  useEffect(() => {
-    api.professions.fetchAll().then((data) => setProfession(data));
-    api.qualities.fetchAll().then((data) => setQualities(data));
-  }, []);
-
+  const { professions } = useProfessions();
+  const professionsList = professions.map((p) => ({
+    label: p.name,
+    value: p._id,
+  }));
+  const { qualities } = useQualities();
+  const qualitiesList = qualities.map((qual) => ({
+    label: qual.name,
+    value: qual._id,
+  }));
+  const { signUp } = useAuth();
   const handleChange = (target) => {
     setData((prevState) => ({ ...prevState, [target.name]: target.value }));
   };
@@ -68,16 +73,22 @@ const RegisterForm = () => {
     return Object.keys(errors).length === 0;
   };
 
-  const handleSummit = (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
     const isvalid = validate();
     if (!isvalid) return;
-    console.log(data);
+    const newData = {
+      ...data,
+      qualities: data.qualities.map((qual) => qual.value),
+    };
+    console.log(newData);
+    signUp(newData);
   };
 
   const isValid = Object.keys(errors).length === 0;
+
   return (
-    <form onSubmit={handleSummit}>
+    <form onSubmit={handleSubmit}>
       <TextField
         label="email"
         name="email"
@@ -95,11 +106,11 @@ const RegisterForm = () => {
       />
       <SelectField
         onChange={handleChange}
-        options={professions}
+        options={professionsList}
         defaultOption="Choose..."
         error={errors.profession}
         value={data.profession}
-        name="professions"
+        name="profession"
         label="Выберите профессию"
       />
       <RadioField
@@ -114,7 +125,7 @@ const RegisterForm = () => {
         label="Выберите ваш пол"
       />
       <MultiSelectField
-        options={qualities}
+        options={qualitiesList}
         onChange={handleChange}
         name="qualities"
         label="Выберите качества"

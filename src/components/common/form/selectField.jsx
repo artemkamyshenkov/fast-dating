@@ -9,12 +9,9 @@ const SelectField = ({
   name,
   error,
 }) => {
-  let optionsArray =
+  const optionsArray =
     !Array.isArray(options) && typeof options === 'object'
-      ? Object.keys(options).map((optionName) => ({
-          name: options[optionName].name,
-          value: options[optionName]._id,
-        }))
+      ? Object.values(options)
       : options;
 
   const getOptionClasses = () => {
@@ -22,7 +19,7 @@ const SelectField = ({
   };
 
   const handleChange = ({ target }) => {
-    onChange({ name: [target.name], value: target.value });
+    onChange({ name: target.name, value: target.value });
   };
 
   return (
@@ -43,7 +40,7 @@ const SelectField = ({
         {optionsArray &&
           optionsArray.map((option) => (
             <option key={option.value} value={option.value}>
-              {option.name}
+              {option.label}
             </option>
           ))}
       </select>
