@@ -3,7 +3,10 @@ import PropTypes from 'prop-types';
 import axios from 'axios';
 import userService from '../services/user.service';
 import { toast } from 'react-toastify';
-import { setTokens } from '../services/localStorage.service';
+import localStorageService, {
+  setTokens,
+} from '../services/localStorage.service';
+import randomInt from '../utils/randomInt';
 
 const AuthContext = React.createContext();
 const httpAuth = axios.create({
@@ -29,7 +32,14 @@ const AuthProvider = ({ children }) => {
         returnSecureToken: true,
       });
       setTokens(data);
-      await createUser({ _id: data.localId, email, ...rest });
+
+      await createUser({
+        _id: data.localId,
+        email,
+        rate: randomInt(1, 5),
+        completedMeetings: randomInt(0, 300),
+        ...rest,
+      });
     } catch (error) {
       errorCatcher(error);
       const { code, message } = error.response.data.error;
@@ -51,7 +61,8 @@ const AuthProvider = ({ children }) => {
         password,
         returnSecureToken: true,
       });
-      setUser(data);
+      setTokens(data);
+      getUserData();
     } catch (error) {
       errorCatcher(error);
       const { code, message } = error.response.data.error;
@@ -66,9 +77,9 @@ const AuthProvider = ({ children }) => {
       }
     }
   }
-  function createUser(data) {
+  async function createUser(data) {
     try {
-      const { content } = userService.create(data);
+      const { content } = await userService.create(data);
       setUser(content);
     } catch (error) {
       errorCatcher(error);
@@ -79,6 +90,20 @@ const AuthProvider = ({ children }) => {
     const { message } = error.response.data;
     setError(message);
   }
+
+  async function getUserData() {
+    try {
+      const { content } = await userService.getCurrentUser();
+      setUser(content);
+    } catch (error) {
+      errorCatcher(error);
+    }
+  }
+  useEffect(() => {
+    if (localStorageService.getAccessToken()) {
+      getUserData();
+    }
+  }, []);
   useEffect(() => {
     if (error !== null) {
       toast(error);
