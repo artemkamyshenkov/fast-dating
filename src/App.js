@@ -10,7 +10,7 @@ import { ProfessionProvider } from './hooks/useProfession';
 import QualitiesProvider from './hooks/useQualities';
 import AuthProvider from './hooks/useAuth';
 import ProtectedRoute from './components/common/protecredRoute';
-
+import LogOut from './layouts/logOut';
 function App() {
   return (
     <>
@@ -22,9 +22,8 @@ function App() {
               <Route path="/" element={<Main />} />
               <Route path="/users/:userId?/" element={<Users />} />
               <Route path="/users/:userId/edit" element={<EditPage />} />
-
               <Route path="/login/:type?" element={<Login />} />
-
+              <Route path="/logout" element={<LogOut />} />
               <Route path="*" element={<Navigate to="/" replace />} />
             </Routes>
           </ProfessionProvider>
