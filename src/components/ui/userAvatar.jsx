@@ -14,7 +14,7 @@ const UserAvatar = ({ user }) => {
         </Link>
         <div className="d-flex flex-column align-items-center text-center position-relative">
           <img
-            src={randomUserAvatar()}
+            src={user.image}
             className="rounded-circle shadow-1-strong me-3"
             alt="avatar"
             width="150"

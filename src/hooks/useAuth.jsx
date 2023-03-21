@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { Navigate, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import axios from 'axios';
 import userService from '../services/user.service';
@@ -8,7 +8,7 @@ import localStorageService, {
   setTokens,
 } from '../services/localStorage.service';
 import randomInt from '../utils/randomInt';
-
+import randomUserAvatar from '../utils/randomuserAvatar';
 const AuthContext = React.createContext();
 
 export const httpAuth = axios.create({
@@ -41,6 +41,7 @@ const AuthProvider = ({ children }) => {
         email,
         rate: randomInt(1, 5),
         completedMeetings: randomInt(0, 300),
+        image: randomUserAvatar(),
         ...rest,
       });
     } catch (error) {
