@@ -6,6 +6,7 @@ import UserAvatar from '../../ui/userAvatar';
 import Comments from '../../ui/comments';
 import UserMeetings from '../../ui/userMeetings';
 import { useUser } from '../../../hooks/useUsers';
+import { CommentsProvider } from '../../../hooks/useComments';
 const UserPage = ({ userId }) => {
   const { getUserById } = useUser();
   const user = getUserById(userId);
@@ -20,7 +21,9 @@ const UserPage = ({ userId }) => {
               <UserMeetings meetings={user.completedMeetings} />
             </div>
             <div className="col-md-8">
-              <Comments />
+              <CommentsProvider>
+                <Comments />
+              </CommentsProvider>
             </div>
           </div>
         </div>
