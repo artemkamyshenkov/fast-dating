@@ -5,13 +5,10 @@ import UserQualities from '../../ui/userQualities';
 import UserAvatar from '../../ui/userAvatar';
 import Comments from '../../ui/comments';
 import UserMeetings from '../../ui/userMeetings';
+import { useUser } from '../../../hooks/useUsers';
 const UserPage = ({ userId }) => {
-  const [user, setUser] = useState();
-
-  useEffect(() => {
-    api.users.getById(userId).then((data) => setUser(data));
-  }, []);
-
+  const { getUserById } = useUser();
+  const user = getUserById(userId);
   if (user) {
     return (
       <div>

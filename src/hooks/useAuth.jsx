@@ -27,6 +27,7 @@ const AuthProvider = ({ children }) => {
   const [error, setError] = useState(null);
   const [isLoading, setLoading] = useState(true);
   const navigate = useNavigate();
+
   async function signUp({ email, password, ...rest }) {
     try {
       const { data } = await httpAuth.post(`accounts:signUp`, {

@@ -40,7 +40,7 @@ export const ProfessionProvider = ({ children }) => {
       errorCatcher(error);
     }
   }
-
+  console.log(professions);
   return (
     <ProfessionContext.Provider
       value={{ isLoading, professions, getProfession }}
