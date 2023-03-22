@@ -97,6 +97,9 @@ const RegisterForm = () => {
       navigate('/');
     } catch (error) {
       setErrors(error);
+      console.log(error);
+    } finally {
+      navigate('/');
     }
   };
 

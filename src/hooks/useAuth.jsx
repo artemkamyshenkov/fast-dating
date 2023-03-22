@@ -1,4 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import axios from 'axios';
 import userService from '../services/user.service';
@@ -7,13 +8,13 @@ import localStorageService, {
   setTokens,
 } from '../services/localStorage.service';
 import randomInt from '../utils/randomInt';
-
+import randomUserAvatar from '../utils/randomuserAvatar';
 const AuthContext = React.createContext();
 
 export const httpAuth = axios.create({
   baseURL: 'https://identitytoolkit.googleapis.com/v1/',
   params: {
-    key: process.env.REACT_APP_FIREBASE_KEY,
+    key: 'AIzaSyB0M9PAhicE4ZbgEuyx5tzIpXBLGVBDxhU',
   },
 });
 
@@ -24,6 +25,8 @@ export const useAuth = () => {
 const AuthProvider = ({ children }) => {
   const [currentUser, setUser] = useState();
   const [error, setError] = useState(null);
+  const [isLoading, setLoading] = useState(true);
+  const navigate = useNavigate();
 
   async function signUp({ email, password, ...rest }) {
     try {
@@ -39,6 +42,7 @@ const AuthProvider = ({ children }) => {
         email,
         rate: randomInt(1, 5),
         completedMeetings: randomInt(0, 300),
+        image: randomUserAvatar(),
         ...rest,
       });
     } catch (error) {
@@ -63,7 +67,7 @@ const AuthProvider = ({ children }) => {
         returnSecureToken: true,
       });
       setTokens(data);
-      getUserData();
+      await getUserData();
     } catch (error) {
       errorCatcher(error);
       const { code, message } = error.response.data.error;
@@ -78,6 +82,13 @@ const AuthProvider = ({ children }) => {
       }
     }
   }
+
+  function logOut() {
+    localStorageService.removeAuthData();
+    setUser(null);
+    navigate('/');
+  }
+
   async function createUser(data) {
     try {
       const { content } = await userService.create(data);
@@ -98,11 +109,15 @@ const AuthProvider = ({ children }) => {
       setUser(content);
     } catch (error) {
       errorCatcher(error);
+    } finally {
+      setLoading(false);
     }
   }
   useEffect(() => {
     if (localStorageService.getAccessToken()) {
       getUserData();
+    } else {
+      setLoading(false);
     }
   }, []);
   useEffect(() => {
@@ -112,8 +127,8 @@ const AuthProvider = ({ children }) => {
     }
   }, [error]);
   return (
-    <AuthContext.Provider value={{ signUp, currentUser, logIn }}>
-      {children}
+    <AuthContext.Provider value={{ signUp, currentUser, logIn, logOut }}>
+      {!isLoading ? children : 'Loading...'}
     </AuthContext.Provider>
   );
 };
