@@ -126,8 +126,19 @@ const AuthProvider = ({ children }) => {
       setError(null);
     }
   }, [error]);
+
+  async function updateUserData(data) {
+    try {
+      const { content } = await userService.updateUser(data);
+      setUser(content);
+    } catch (error) {
+      errorCatcher(error);
+    }
+  }
   return (
-    <AuthContext.Provider value={{ signUp, currentUser, logIn, logOut }}>
+    <AuthContext.Provider
+      value={{ signUp, currentUser, logIn, logOut, updateUserData }}
+    >
       {!isLoading ? children : 'Loading...'}
     </AuthContext.Provider>
   );
