@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Route, Routes, Navigate } from 'react-router-dom';
 import NavBar from './components/ui/navBar';
 import Users from './layouts/users';
@@ -9,9 +9,15 @@ import { ToastContainer } from 'react-toastify';
 import { ProfessionProvider } from './hooks/useProfession';
 import QualitiesProvider from './hooks/useQualities';
 import AuthProvider from './hooks/useAuth';
-import ProtectedRoute from './components/common/protecredRoute';
 import LogOut from './layouts/logOut';
+import { useDispatch } from 'react-redux';
+import { loadQualitiesList } from './store/qualities';
+
 function App() {
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(loadQualitiesList());
+  }, []);
   return (
     <>
       <AuthProvider>
