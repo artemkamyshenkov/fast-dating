@@ -6,12 +6,16 @@ import SelectField from '../../common/form/selectField';
 import RadioField from '../../common/form/radioField';
 import MultiSelectField from '../../common/form/multiSelectField';
 import { useAuth } from '../../../hooks/useAuth';
-import { useProfessions } from '../../../hooks/useProfession';
 import { useSelector } from 'react-redux';
 import {
   getQualities,
   getQualitiesLoadingStatus,
 } from '../../../store/qualities';
+import {
+  getProfessions,
+  getProfessionsLoadingStatus,
+} from '../../../store/professions';
+
 const EditUserPage = () => {
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(true);
@@ -21,8 +25,8 @@ const EditUserPage = () => {
 
   const qualities = useSelector(getQualities());
   const qualitiesLoading = useSelector(getQualitiesLoadingStatus());
-  const { professions, isLoading: professionLoading } = useProfessions();
-
+  const professions = useSelector(getProfessions());
+  const professionLoading = useSelector(getProfessionsLoadingStatus());
   const [errors, setErrors] = useState({});
 
   const professionsList = professions.map((p) => ({
