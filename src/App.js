@@ -7,7 +7,6 @@ import Login from './layouts/login';
 import EditPage from './components/page/editPage';
 import { ToastContainer } from 'react-toastify';
 import { ProfessionProvider } from './hooks/useProfession';
-import QualitiesProvider from './hooks/useQualities';
 import AuthProvider from './hooks/useAuth';
 import LogOut from './layouts/logOut';
 import { useDispatch } from 'react-redux';
@@ -22,18 +21,16 @@ function App() {
     <>
       <AuthProvider>
         <NavBar />
-        <QualitiesProvider>
-          <ProfessionProvider>
-            <Routes>
-              <Route path="/" element={<Main />} />
-              <Route path="/users/:userId?/" element={<Users />} />
-              <Route path="/users/:userId/edit" element={<EditPage />} />
-              <Route path="/login/:type?" element={<Login />} />
-              <Route path="/logout" element={<LogOut />} />
-              <Route path="*" element={<Navigate to="/" replace />} />
-            </Routes>
-          </ProfessionProvider>
-        </QualitiesProvider>
+        <ProfessionProvider>
+          <Routes>
+            <Route path="/" element={<Main />} />
+            <Route path="/users/:userId?/" element={<Users />} />
+            <Route path="/users/:userId/edit" element={<EditPage />} />
+            <Route path="/login/:type?" element={<Login />} />
+            <Route path="/logout" element={<LogOut />} />
+            <Route path="*" element={<Navigate to="/" replace />} />
+          </Routes>
+        </ProfessionProvider>
       </AuthProvider>
       <ToastContainer />
     </>
