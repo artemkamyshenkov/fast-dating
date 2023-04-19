@@ -6,13 +6,13 @@ import GroupList from '../../common/groupList';
 import SearchStatus from '../../ui/searchStatus';
 import UserTable from '../../ui/usersTable';
 import _ from 'lodash';
-import { useUser } from '../../../hooks/useUsers';
 import { useAuth } from '../../../hooks/useAuth';
 import {
   getProfessions,
   getProfessionsLoadingStatus,
 } from '../../../store/professions';
 import { useSelector } from 'react-redux';
+import { getUsersList } from '../../../store/users';
 
 const UsersListPage = () => {
   const [currentPage, setCurrentPage] = useState(1);
@@ -20,7 +20,7 @@ const UsersListPage = () => {
   const [sortBy, setSortBy] = useState({ path: 'name', order: 'asc' });
   const [searchQuery, setSearchQuery] = useState('');
   const pageSize = 8;
-  const { users } = useUser();
+  const users = useSelector(getUsersList());
   const { currentUser } = useAuth();
 
   const professions = useSelector(getProfessions());
@@ -37,8 +37,6 @@ const UsersListPage = () => {
       }
       return user;
     });
-    // setUsers(newArray);
-    console.log(newArray);
   };
 
   useEffect(() => {
