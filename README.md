@@ -12,6 +12,7 @@ The application is built with the following technologies:
 
 ## Installation
 To install the application, follow these steps:
+`
 `Clone the repository to your local machine.`
 
 `Navigate to the project directory.`
@@ -19,7 +20,7 @@ To install the application, follow these steps:
 `Run npm install to install the dependencies.`
 
 `Run npm start to start the development server.`
-
+`
 ## Features
 The following features are implemented in the application:
 + Registration and authorization process
