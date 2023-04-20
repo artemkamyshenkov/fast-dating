@@ -9,9 +9,11 @@ import { useDispatch, useSelector } from 'react-redux';
 import { getQualities } from '../../store/qualities';
 import { getProfessions } from '../../store/professions';
 import { signUp } from '../../store/users';
+import { useNavigate } from 'react-router-dom';
 
 const RegisterForm = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const [data, setData] = useState({
     name: '',
     email: '',
@@ -93,6 +95,7 @@ const RegisterForm = () => {
     };
 
     dispatch(signUp(newData));
+    navigate('/');
   };
 
   const isValid = Object.keys(errors).length === 0;
