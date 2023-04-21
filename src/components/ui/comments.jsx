@@ -2,7 +2,6 @@ import React, { useEffect } from 'react';
 import { orderBy } from 'lodash';
 import CommentList from '../common/commentList';
 import AddCommentForm from '../common/addCommentField';
-import { useComments } from '../../hooks/useComments';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   createComment,
