@@ -12,7 +12,7 @@ import {
   getProfessionsLoadingStatus,
 } from '../../../store/professions';
 import { useSelector } from 'react-redux';
-import { getUsersList } from '../../../store/users';
+import { getCurrentUserId, getUsersList } from '../../../store/users';
 
 const UsersListPage = () => {
   const [currentPage, setCurrentPage] = useState(1);
@@ -21,7 +21,7 @@ const UsersListPage = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const pageSize = 8;
   const users = useSelector(getUsersList());
-  const { currentUser } = useAuth();
+  const currentUserId = useSelector(getCurrentUserId());
 
   const professions = useSelector(getProfessions());
   const professionsLoading = useSelector(getProfessionsLoadingStatus());
@@ -72,7 +72,7 @@ const UsersListPage = () => {
             JSON.stringify(user.profession) === JSON.stringify(selectedProf)
         )
       : data;
-    return filteredUsers.filter((user) => user._id !== currentUser._id);
+    return filteredUsers.filter((user) => user._id !== currentUserId);
   }
 
   if (users) {

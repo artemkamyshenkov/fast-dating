@@ -2,8 +2,9 @@ import React, { useEffect, useState } from 'react';
 import validator from '../../utils/validator';
 import TextField from '../common/form/textField';
 import CheckBoxField from '../common/form/checkBoxField';
-import { useAuth } from '../../hooks/useAuth';
 import { useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { login } from '../../store/users';
 
 const LoginForm = () => {
   const [data, setData] = useState({ email: '', password: '', stayOn: false });
@@ -15,8 +16,8 @@ const LoginForm = () => {
     setEnterError(null);
   };
 
-  const { logIn } = useAuth();
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const validateConfig = {
     email: {
       isRequired: { message: 'Email is required' },
@@ -36,17 +37,14 @@ const LoginForm = () => {
     return Object.keys(errors).length === 0;
   };
 
-  const handleSummit = async (e) => {
+  const handleSummit = (e) => {
     e.preventDefault();
     const isvalid = validate();
     if (!isvalid) return;
-
-    try {
-      await logIn(data);
+    dispatch(login({ payload: data }));
+    setTimeout(() => {
       navigate('/');
-    } catch (error) {
-      setEnterError(error.message);
-    }
+    }, 2000);
   };
 
   const isValid = Object.keys(errors).length === 0;
