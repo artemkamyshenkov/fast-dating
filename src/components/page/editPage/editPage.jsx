@@ -6,7 +6,7 @@ import SelectField from '../../common/form/selectField';
 import RadioField from '../../common/form/radioField';
 import MultiSelectField from '../../common/form/multiSelectField';
 import { useAuth } from '../../../hooks/useAuth';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import {
   getQualities,
   getQualitiesLoadingStatus,
@@ -15,13 +15,13 @@ import {
   getProfessions,
   getProfessionsLoadingStatus,
 } from '../../../store/professions';
-import { getCurrentUserData } from '../../../store/users';
+import { getCurrentUserData, updateUser } from '../../../store/users';
 
 const EditUserPage = () => {
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(true);
   const [data, setData] = useState();
-
+  const dispatch = useDispatch();
   const { updateUserData } = useAuth();
   const currentUser = useSelector(getCurrentUserData());
   const qualities = useSelector(getQualities());
@@ -51,15 +51,20 @@ const EditUserPage = () => {
     return qualitiesArr;
   }
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
     const isValid = validate();
     if (!isValid) return;
-
-    await updateUserData({
-      ...data,
-      qualities: data.qualities.map((qual) => qual.value),
-    });
+    dispatch(
+      updateUser({
+        ...data,
+        qualities: data.qualities.map((qual) => qual.value),
+      })
+    );
+    // updateUserData({
+    //   ...data,
+    //   qualities: data.qualities.map((qual) => qual.value),
+    // });
     navigate(`/users/${currentUser._id}`);
   };
   const transformData = (data) => {

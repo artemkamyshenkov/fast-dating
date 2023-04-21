@@ -3,7 +3,7 @@ import userService from '../services/user.service';
 import authService from '../services/auth.service';
 import localStorageService from '../services/localStorage.service';
 import randomInt from '../utils/randomInt';
-
+import { generateAuthError } from '../utils/generateAuthError';
 const initialState = localStorageService.getAccessToken()
   ? {
       entities: null,
@@ -57,6 +57,14 @@ const usersSlice = createSlice({
       state.auth = null;
       state.dataLoaded = false;
     },
+    userUpdateSuccessed: (state, action) => {
+      state.entities[
+        state.entities.findIndex((u) => u._id === action.payload._id)
+      ] = action.payload;
+    },
+    authRequested: (state) => {
+      state.error = null;
+    },
   },
 });
 
@@ -70,6 +78,7 @@ const {
   userCreated,
   userLoggedOut,
   userUpdateSuccessed,
+  setErrors,
 } = actions;
 
 const authRequested = createAction('users/authRequested');
@@ -89,13 +98,13 @@ export const login =
 
       localStorageService.setTokens(data);
     } catch (error) {
-      // const { code, message } = error.response.data.error;
-      // if (code === 400) {
-      //   const errorMessage = generateAuthError(message);
-      //   dispatch(authRequestFailed(errorMessage));
-      // } else {
-      //   dispatch(authRequestFailed(error.message));
-      // }
+      const { code, message } = error.response.data.error;
+      if (code === 400) {
+        const errorMessage = generateAuthError(message);
+        dispatch(authRequestFailed(errorMessage));
+      } else {
+        dispatch(authRequestFailed(error.message));
+      }
       console.log(error);
     }
   };
@@ -161,6 +170,16 @@ function createUser(payload) {
     }
   };
 }
+
+export const updateUser = (payload) => async (dispatch) => {
+  dispatch(userUpdateRequested());
+  try {
+    const { content } = await userService.updateUser(payload);
+    dispatch(userUpdateSuccessed(content));
+  } catch (error) {
+    dispatch(userUpdateFailed(error.message));
+  }
+};
 
 export const getIsLoggedIn = () => (state) => state.users.isLoggedIn;
 export const getDataStatus = () => (state) => state.users.dataLoaded;
