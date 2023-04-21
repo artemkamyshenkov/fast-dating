@@ -2,21 +2,20 @@ import React, { useEffect, useState } from 'react';
 import validator from '../../utils/validator';
 import TextField from '../common/form/textField';
 import CheckBoxField from '../common/form/checkBoxField';
-import { useAuth } from '../../hooks/useAuth';
 import { useNavigate } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { getAuthErrors, login } from '../../store/users';
 
 const LoginForm = () => {
   const [data, setData] = useState({ email: '', password: '', stayOn: false });
   const [errors, setErrors] = useState({});
-  const [enterError, setEnterError] = useState(null);
 
   const handleChange = (target) => {
     setData((prevState) => ({ ...prevState, [target.name]: target.value }));
-    setEnterError(null);
   };
-
-  const { logIn } = useAuth();
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const loginError = useSelector(getAuthErrors());
   const validateConfig = {
     email: {
       isRequired: { message: 'Email is required' },
@@ -36,17 +35,12 @@ const LoginForm = () => {
     return Object.keys(errors).length === 0;
   };
 
-  const handleSummit = async (e) => {
+  const handleSummit = (e) => {
     e.preventDefault();
     const isvalid = validate();
     if (!isvalid) return;
-
-    try {
-      await logIn(data);
-      navigate('/');
-    } catch (error) {
-      setEnterError(error.message);
-    }
+    dispatch(login({ payload: data }));
+    navigate('/users');
   };
 
   const isValid = Object.keys(errors).length === 0;
@@ -67,9 +61,9 @@ const LoginForm = () => {
         onChange={handleChange}
         error={errors.password}
       />
-      {enterError && <p className="text-danger">{enterError}</p>}
+      {loginError && <p className="text-danger">{loginError}</p>}
       <button
-        disabled={!isValid || enterError}
+        disabled={!isValid}
         className="btn btn-primary w-100 mx-auto mb-2"
       >
         Submit

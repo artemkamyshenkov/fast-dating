@@ -1,14 +1,16 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import { useAuth } from '../../hooks/useAuth';
+import { useSelector } from 'react-redux';
+import { getCurrentUserData, getCurrentUserId } from '../../store/users';
 
 const UserAvatar = ({ user }) => {
-  const { currentUser } = useAuth();
+  const currentUser = useSelector(getCurrentUserData());
+  const currentUSerId = useSelector(getCurrentUserId());
   return (
     <div className="card mb-3">
       <div className="card-body">
-        {currentUser._id === user._id && (
+        {currentUSerId === user._id && (
           <Link
             to={'edit'}
             className="position-absolute top-0 end-0 btn btn-light btn-sm"
