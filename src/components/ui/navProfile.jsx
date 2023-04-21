@@ -1,14 +1,15 @@
 import React, { useState } from 'react';
-import { useAuth } from '../../hooks/useAuth';
 import { Link } from 'react-router-dom';
-import randomUserAvatar from '../../utils/randomuserAvatar';
+import { useSelector } from 'react-redux';
+import { getCurrentUserData } from '../../store/users';
 
 const NavProfile = () => {
-  const { currentUser } = useAuth();
+  const currentUser = useSelector(getCurrentUserData());
   const [isOpen, setIsOpen] = useState(false);
   const toggleMenu = () => {
     setIsOpen((prevState) => !prevState);
   };
+  if (!currentUser) return 'Loading';
   return (
     <div className="dropdown me-5" onClick={toggleMenu}>
       <div className="btn dropdown-toggle d-flex align-items-center">

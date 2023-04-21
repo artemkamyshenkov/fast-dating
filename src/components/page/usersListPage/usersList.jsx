@@ -6,7 +6,6 @@ import GroupList from '../../common/groupList';
 import SearchStatus from '../../ui/searchStatus';
 import UserTable from '../../ui/usersTable';
 import _ from 'lodash';
-import { useAuth } from '../../../hooks/useAuth';
 import {
   getProfessions,
   getProfessionsLoadingStatus,

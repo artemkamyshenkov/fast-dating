@@ -51,6 +51,12 @@ const usersSlice = createSlice({
       }
       state.entities.push(action.payload);
     },
+    userLoggedOut: (state) => {
+      state.entities = null;
+      state.isLoggedIn = false;
+      state.auth = null;
+      state.dataLoaded = false;
+    },
   },
 });
 
@@ -139,6 +145,11 @@ export const signUp =
     }
   };
 
+export const logOut = () => (dispatch) => {
+  localStorageService.removeAuthData();
+  dispatch(userLoggedOut());
+};
+
 function createUser(payload) {
   return async function (dispatch) {
     dispatch(userCreateRequested());
@@ -151,9 +162,14 @@ function createUser(payload) {
   };
 }
 
-export const getIsLoggedIn = (state) => state.users.isLoggedIn;
+export const getIsLoggedIn = () => (state) => state.users.isLoggedIn;
 export const getDataStatus = () => (state) => state.users.dataLoaded;
 export const getUsersLoadingStatus = () => (state) => state.users.isLoading;
 export const getCurrentUserId = () => (state) => state.users.auth.userId;
 export const getAuthErrors = () => (state) => state.users.error;
+export const getCurrentUserData = () => (state) => {
+  return state.users.entities
+    ? state.users.entities.find((u) => u._id === state.users.auth.userId)
+    : null;
+};
 export default usersReducer;
