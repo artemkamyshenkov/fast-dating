@@ -5,7 +5,6 @@ import TextField from '../../common/form/textField';
 import SelectField from '../../common/form/selectField';
 import RadioField from '../../common/form/radioField';
 import MultiSelectField from '../../common/form/multiSelectField';
-import { useAuth } from '../../../hooks/useAuth';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   getQualities,
@@ -22,7 +21,6 @@ const EditUserPage = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [data, setData] = useState();
   const dispatch = useDispatch();
-  const { updateUserData } = useAuth();
   const currentUser = useSelector(getCurrentUserData());
   const qualities = useSelector(getQualities());
   const qualitiesLoading = useSelector(getQualitiesLoadingStatus());

@@ -1,12 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
-import api from '../../../api';
 import UserQualities from '../../ui/userQualities';
 import UserAvatar from '../../ui/userAvatar';
 import Comments from '../../ui/comments';
 import UserMeetings from '../../ui/userMeetings';
-
-import { CommentsProvider } from '../../../hooks/useComments';
 import { useSelector } from 'react-redux';
 import { getUserById } from '../../../store/users';
 const UserPage = ({ userId }) => {
@@ -22,9 +19,7 @@ const UserPage = ({ userId }) => {
               <UserMeetings meetings={user.completedMeetings} />
             </div>
             <div className="col-md-8">
-              <CommentsProvider>
-                <Comments />
-              </CommentsProvider>
+              <Comments />
             </div>
           </div>
         </div>
