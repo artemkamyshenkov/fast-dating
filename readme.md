@@ -3,12 +3,16 @@
 
 ## Stack
 The application is built with the following technologies:
-
+### Frontend:
 + React
 + Redux Toolkit
 + React-Router 6
 + Eslint
 + Prettier
+
+### Backend
++ express
++ MongoDB
 
 ## Installation
 To install the application, follow these steps:
