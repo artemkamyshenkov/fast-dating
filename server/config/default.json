@@ -1,4 +1,6 @@
 {
   "port": 8080,
-  "mongoUri": "mongodb+srv://artem:daimond1@cluster0.p5ilkns.mongodb.net/?retryWrites=true&w=majority"
+  "mongoUri": "mongodb+srv://artem:daimond1@cluster0.p5ilkns.mongodb.net/?retryWrites=true&w=majority",
+  "accessSecret": "super secret from backend",
+  "refreshSecret": "super refresh secret from backend"
 }
