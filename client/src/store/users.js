@@ -127,49 +127,45 @@ export const getUserById = (userId) => (state) => {
 
 export const getUsersList = () => (state) => state.users.entities;
 
-export const signUp =
-  ({ email, password, ...rest }) =>
-  async (dispatch) => {
-    dispatch(authRequested());
-    try {
-      const data = await authService.register({ email, password });
-      localStorageService.setTokens(data);
-      dispatch(authRequestSuccess({ userId: data.localId }));
-      dispatch(
-        createUser({
-          _id: data.localId,
-          email,
-          rate: randomInt(1, 5),
-          completedMeetings: randomInt(0, 200),
-          image: `https://avatars.dicebear.com/api/avataaars/${(
-            Math.random() + 1
-          )
-            .toString(36)
-            .substring(7)}.svg`,
-          ...rest,
-        })
-      );
-    } catch (error) {
-      dispatch(authRequestFailed(error.message));
-    }
-  };
+export const signUp = (payload) => async (dispatch) => {
+  dispatch(authRequested());
+  try {
+    const data = await authService.register(payload);
+    localStorageService.setTokens(data);
+    dispatch(authRequestSuccess({ userId: data.userId }));
+    // dispatch(
+    //   createUser({
+    //     _id: data.localId,
+    //     email,
+    //     rate: randomInt(1, 5),
+    //     completedMeetings: randomInt(0, 200),
+    //     image: `https://avatars.dicebear.com/api/avataaars/${(Math.random() + 1)
+    //       .toString(36)
+    //       .substring(7)}.svg`,
+    //     ...rest,
+    //   })
+    // );
+  } catch (error) {
+    dispatch(authRequestFailed(error.message));
+  }
+};
 
 export const logOut = () => (dispatch) => {
   localStorageService.removeAuthData();
   dispatch(userLoggedOut());
 };
 
-function createUser(payload) {
-  return async function (dispatch) {
-    dispatch(userCreateRequested());
-    try {
-      const { content } = await userService.create(payload);
-      dispatch(userCreated(content));
-    } catch (error) {
-      dispatch(createUserFailed(error.message));
-    }
-  };
-}
+// function createUser(payload) {
+//   return async function (dispatch) {
+//     dispatch(userCreateRequested());
+//     try {
+//       const { content } = await userService.create(payload);
+//       dispatch(userCreated(content));
+//     } catch (error) {
+//       dispatch(createUserFailed(error.message));
+//     }
+//   };
+// }
 
 export const updateUser = (payload) => async (dispatch) => {
   dispatch(userUpdateRequested());

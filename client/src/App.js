@@ -6,7 +6,6 @@ import Main from './layouts/main';
 import Login from './layouts/login';
 import EditPage from './components/page/editPage';
 import { ToastContainer } from 'react-toastify';
-import AuthProvider from './hooks/useAuth';
 import LogOut from './layouts/logOut';
 import { useDispatch, useSelector } from 'react-redux';
 import { loadQualitiesList } from './store/qualities';
@@ -22,17 +21,15 @@ function App() {
   }, [isLoggedIn]);
   return (
     <>
-      <AuthProvider>
-        <NavBar />
-        <Routes>
-          <Route path="/" element={<Main />} />
-          <Route path="/users/:userId?/" element={<Users />} />
-          <Route path="/users/:userId/edit" element={<EditPage />} />
-          <Route path="/login/:type?" element={<Login />} />
-          <Route path="/logout" element={<LogOut />} />
-          <Route path="*" element={<Navigate to="/" replace />} />
-        </Routes>
-      </AuthProvider>
+      <NavBar />
+      <Routes>
+        <Route path="/" element={<Main />} />
+        <Route path="/users/:userId?/" element={<Users />} />
+        <Route path="/users/:userId/edit" element={<EditPage />} />
+        <Route path="/login/:type?" element={<Login />} />
+        <Route path="/logout" element={<LogOut />} />
+        <Route path="*" element={<Navigate to="/" replace />} />
+      </Routes>
       <ToastContainer />
     </>
   );
