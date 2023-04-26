@@ -3,7 +3,7 @@ const { Schema, model } = require('mongoose');
 const schema = new Schema(
   {
     content: {
-      type: String,
+      type: Schema.Types.Mixed,
       required: true,
     },
     pageId: {

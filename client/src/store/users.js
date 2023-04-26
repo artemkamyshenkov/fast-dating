@@ -2,7 +2,7 @@ import { createAction, createSlice } from '@reduxjs/toolkit';
 import userService from '../services/user.service';
 import authService from '../services/auth.service';
 import localStorageService from '../services/localStorage.service';
-import randomInt from '../utils/randomInt';
+
 import { generateAuthError } from '../utils/generateAuthError';
 const initialState = localStorageService.getAccessToken()
   ? {
@@ -75,15 +75,12 @@ const {
   usersRequestFailed,
   authRequestSuccess,
   authRequestFailed,
-  userCreated,
   userLoggedOut,
   userUpdateSuccessed,
   setErrors,
 } = actions;
 
 const authRequested = createAction('users/authRequested');
-const userCreateRequested = createAction('users/userCreateRequested');
-const createUserFailed = createAction('users/createUserFailed');
 const userUpdateRequested = createAction('users/userUpdateRequested');
 const userUpdateFailed = createAction('users/userUpdateFailed');
 
@@ -94,9 +91,8 @@ export const login =
     dispatch(authRequested());
     try {
       const data = await authService.login({ email, password });
-      dispatch(authRequestSuccess({ userId: data.localId }));
-
       localStorageService.setTokens(data);
+      dispatch(authRequestSuccess({ userId: data.userId }));
     } catch (error) {
       const { code, message } = error.response.data.error;
       if (code === 400) {
@@ -133,18 +129,6 @@ export const signUp = (payload) => async (dispatch) => {
     const data = await authService.register(payload);
     localStorageService.setTokens(data);
     dispatch(authRequestSuccess({ userId: data.userId }));
-    // dispatch(
-    //   createUser({
-    //     _id: data.localId,
-    //     email,
-    //     rate: randomInt(1, 5),
-    //     completedMeetings: randomInt(0, 200),
-    //     image: `https://avatars.dicebear.com/api/avataaars/${(Math.random() + 1)
-    //       .toString(36)
-    //       .substring(7)}.svg`,
-    //     ...rest,
-    //   })
-    // );
   } catch (error) {
     dispatch(authRequestFailed(error.message));
   }
@@ -154,18 +138,6 @@ export const logOut = () => (dispatch) => {
   localStorageService.removeAuthData();
   dispatch(userLoggedOut());
 };
-
-// function createUser(payload) {
-//   return async function (dispatch) {
-//     dispatch(userCreateRequested());
-//     try {
-//       const { content } = await userService.create(payload);
-//       dispatch(userCreated(content));
-//     } catch (error) {
-//       dispatch(createUserFailed(error.message));
-//     }
-//   };
-// }
 
 export const updateUser = (payload) => async (dispatch) => {
   dispatch(userUpdateRequested());
