@@ -12,7 +12,7 @@ import randomUserAvatar from '../utils/randomuserAvatar';
 const AuthContext = React.createContext();
 
 export const httpAuth = axios.create({
-  baseURL: 'https://identitytoolkit.googleapis.com/v1/',
+  baseURL: 'http://localhost:8080/api',
   params: {
     key: 'AIzaSyB0M9PAhicE4ZbgEuyx5tzIpXBLGVBDxhU',
   },
@@ -30,7 +30,7 @@ const AuthProvider = ({ children }) => {
 
   async function signUp({ email, password, ...rest }) {
     try {
-      const { data } = await httpAuth.post(`accounts:signUp`, {
+      const { data } = await httpAuth.post(`signUp`, {
         email,
         password,
         returnSecureToken: true,
@@ -61,7 +61,7 @@ const AuthProvider = ({ children }) => {
 
   async function logIn({ email, password }) {
     try {
-      const { data } = await httpAuth.post(`accounts:signInWithPassword`, {
+      const { data } = await httpAuth.post(`signInWithPassword`, {
         email,
         password,
         returnSecureToken: true,
